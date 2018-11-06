@@ -1,0 +1,41 @@
+#grid {
+  /* background-color: blue; */
+  display: grid;
+  position: absolute;
+  top: 0; left: 0;
+  /*grid-template-columns: fit-content(1px) fit-content(1px) fit-content(1px);*/
+  grid-gap: 10px;
+  resize: both;
+  transform-origin: top left;
+}
+
+.box {
+  /* background-color: yellow; */
+  border-radius: 5px;
+  padding: 10px;
+  resize: none;
+  transform-origin: top left;
+}
+
+#controls {
+  position: fixed;
+  display: flex;
+  bottom: 0;
+  right: 10;
+}
+
+#getURL {
+  display: none;
+  background-color: grey;
+  position: absolute;
+  top: 10%; left: 10%;
+  padding: 50px;
+}
+
+iframe {
+  padding: 0px;
+}
+
+a {
+  color: blue;
+}
