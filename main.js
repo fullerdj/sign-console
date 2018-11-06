@@ -27,11 +27,17 @@ $(() => {
 
   for (var i of initial) {
     urls.push(feeds.find(feed => feed.room === i).url);
-    addDiv();
   }
-  scale();
-  loadContent();
+  buildGrid();
 });
+
+function buildGrid() {
+  $("#grid div").remove();
+  for (let i = 0; i < urls.length; i++) {
+    addDiv(i);
+  }
+  loadContent();
+}
 
 function fmtDate(d) {
   return "&testing=1" + "&date=2018-11-" + `${d.getDate()}`.padStart(2, 0) +
@@ -93,18 +99,39 @@ function onKeyDown(e) {
   loadContent();
 }
 
-function makeAddLink(url) {
-  return $("<a>").text(url).click(() => $("#new-url").val(url));
+function makeCheckbox(feed) {
+  return $("<input>", {
+      type: "checkbox",
+      checked: urls.find(url => url === feed.url) !== undefined
+    })
+    .click(function () {
+      if ($(this).attr("checked") === undefined) {
+        $(this).attr("checked", 1);
+        urls.push(feed.url);
+        addDiv();
+      } else {
+        $(this).attr("checked", undefined);
+        urls = urls.filter(u => u !== feed.url);
+        buildGrid();
+      }
+    });
+}
+
+function makeLink(feed) {
+  return $("<a>").text(feed.url).click(() => $("#new-url").val(feed.url));
+}
+
+function makeAddLink(feed) {
+  return $("<div>").append(makeCheckbox(feed))
+                   .append(" " + feed.room + " (" + feed.dates + ") ")
+                   .append(makeLink(feed));
 }
 
 function onAddClick(e) {
-  // XXX
-  $("#new-url").val("https://submissions.supercomputing.org/?page=HtmlSignFeed&new_year=sc18&room_id=room122");
   $("#new-url").css("width", feeds[0].url.length + "ch");
   let list = $("<ul>");
   for (var i of feeds) {
-    list.append($("<li>").append(i.room + " (" + i.dates + ") " )
-                         .append(makeAddLink(i.url)));
+    list.append($("<li>").append(makeAddLink(i)));
   }
   $("#options").empty().append(list);
   $("#getURL").css("display", "block");
