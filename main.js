@@ -55,19 +55,19 @@ function scale() {
 }
 
 function addDiv(_which) {
-  which = _which !== undefined ? _which : urls.length-1;
-  var div = $("<div />",
+  let which = _which !== undefined ? _which : urls.length-1;
+  let div = $("<div />",
     {
       id: "box-" + which,
       class: "box",
     }
-  );
-  div.append(
+  ).append(
     $("<iframe>", { id: "frame-" + which } )
       .css( { width: WIDTH, height: HEIGHT} )
   );
   $("#grid").append(div);
   scale();
+  loadContent();
 }
 
 function onKeyDown(e) {
@@ -90,12 +90,12 @@ function onKeyDown(e) {
 
     case KEY_ESC:
       $("#getURL").css("display", "none");
+      return;
     break;
 
     default:
     return;
   }
-  console.log("moving ");
   loadContent();
 }
 
