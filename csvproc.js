@@ -23,7 +23,12 @@ reader.on('line', data => {
   let room, dates, url;
   console.log(data);
   [room, dates, url] = data.split(',');
-  a.push({room: room, dates: dates, url: url});
+  try {
+    new URL(url);
+    a.push({room: room, dates: dates, url: url});
+  } catch (error) {
+    ;
+  }
 });
 
 reader.on('close', () => {
